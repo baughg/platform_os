@@ -34,8 +34,10 @@ bool WindowsPlatform::run_application(
 	PROCESS_INFORMATION processInformation{};
 	STARTUPINFO startupInfo{};
 	startupInfo.cb = sizeof(startupInfo);
-	startupInfo.wShowWindow = SW_HIDE;
-	
+	//startupInfo.hStdOutput
+	//startupInfo.wShowWindow = SW_HIDE;
+	startupInfo.wShowWindow = SW_SHOWNORMAL;
+
 	BOOL result{};
 	//Needed since CreateProcessW may change the contents of CmdLine
 	std::array<TCHAR, MAX_PATH << 1 > tempCmdLine{};
@@ -43,8 +45,11 @@ bool WindowsPlatform::run_application(
 	if (CmdLine)
 	{
 		_tcscpy_s(tempCmdLine.data(), MAX_PATH << 1, CmdLine);
-		result = ::CreateProcess(
+		/*result = ::CreateProcess(
 			AppName, tempCmdLine.data(), NULL, NULL, FALSE, CREATE_NO_WINDOW, 
+			NULL, NULL, &startupInfo, &processInformation);*/
+		result = ::CreateProcess(
+			AppName, tempCmdLine.data(), NULL, NULL, FALSE, CREATE_NO_WINDOW,
 			NULL, NULL, &startupInfo, &processInformation);
 	}
 	else
@@ -57,6 +62,7 @@ bool WindowsPlatform::run_application(
 	if (result == 0)
 	{
 		auto last_err{ GetLastError() };
+		printf("Error\n");
 		return false;
 	}
 
