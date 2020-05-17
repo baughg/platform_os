@@ -41,14 +41,18 @@ bool WindowsPlatform::run_application(
 	//Needed since CreateProcessW may change the contents of CmdLine
 	std::array<TCHAR, MAX_PATH << 1 > tempCmdLine{};
 	 
-	if (CmdLine != nullptr)
+	if (CmdLine)
 	{
-		_tcscpy_s(tempCmdLine.data(), MAX_PATH * 2, CmdLine);
-		result = ::CreateProcess(AppName, tempCmdLine.data(), NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &startupInfo, &processInformation);
+		_tcscpy_s(tempCmdLine.data(), MAX_PATH << 1, CmdLine);
+		result = ::CreateProcess(
+			AppName, tempCmdLine.data(), NULL, NULL, FALSE, CREATE_NO_WINDOW, 
+			NULL, NULL, &startupInfo, &processInformation);
 	}
 	else
 	{
-		result = ::CreateProcess(AppName, CmdLine, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startupInfo, &processInformation);
+		result = ::CreateProcess(
+			AppName, CmdLine, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, 
+			NULL, NULL, &startupInfo, &processInformation);
 	}
 	
 	if (result == 0)
@@ -71,5 +75,6 @@ uint32_t WindowsPlatform::directory_content(
 }
 
 int WindowsPlatform::delete_file(const std::string &file_name) {
-	return 0;
+	std::unique_ptr<wchar_t[]> file_name_ptr{ get_wide_char_string(file_name.c_str()) };		
+	return static_cast<int>(::DeleteFile(file_name_ptr.get()));
 }
