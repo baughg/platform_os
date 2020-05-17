@@ -35,3 +35,13 @@ void PlatformOS::subdirectory_content(
 		dir_list_sec.clear();
 	}
 }
+
+std::string PlatformOS::get_random_string(const uint32_t &sz) {
+	std::vector<char> buffer(sz+1);
+
+	for (uint32_t i{ 0 }; i < sz; ++i) {
+		buffer[i] = 'a' + static_cast<char>(std::rand() % 26);
+	}
+
+	return std::string{ &buffer[0] };
+}

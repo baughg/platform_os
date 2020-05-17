@@ -21,6 +21,11 @@ namespace GB {
 		void subdirectory_content(
 			const std::string &_dir, 
 			std::vector<std::string> &file_list, bool alloc = true);
+
+		std::string get_random_string(const uint32_t &sz);
+
+		virtual std::string get_slash() = 0;
+		virtual std::string get_shell_extension() = 0;
 	};
 }
 

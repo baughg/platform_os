@@ -123,4 +123,11 @@ int WindowsPlatform::delete_file(const std::string &file_name) {
 	return static_cast<int>(::DeleteFile(file_name_ptr.get()));
 }
 
+std::string WindowsPlatform::get_slash() {
+	return slash_;
+}
+
+std::string WindowsPlatform::get_shell_extension() {
+	return batch_shell_ext_;
+}
 

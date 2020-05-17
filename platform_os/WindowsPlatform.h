@@ -20,8 +20,12 @@ namespace GB {
 			std::vector<std::string> &dir_list) override;
 
 		int delete_file(const std::string &file_name) override;
+		std::string get_slash() override;
+		std::string get_shell_extension() override;
 	private:
 		std::unique_ptr<wchar_t[]> get_wide_char_string(const char *c);
+		const std::string slash_{ "\\\0" };
+		const std::string batch_shell_ext_{ ".bat" };
 	};
 }
 
